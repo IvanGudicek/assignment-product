@@ -1,0 +1,21 @@
+server:
+  port: 8888
+
+spring:
+  profiles:
+    active: local
+  webflux:
+    base-path: /assignment-product-service
+  liquibase:
+    change-log: classpath:db/db.changelog-root.yml
+
+logging:
+  level:
+    org.springframework: DEBUG
+    org.hibernate: DEBUG
+    liquibase: DEBUG
+    LiquibaseSchemaResolver: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /swagger/swagger-ui.html
