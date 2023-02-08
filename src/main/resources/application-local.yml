@@ -9,3 +9,10 @@ spring:
       ddl-auto: validate
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+hnb:
+  services:
+    config:
+      serverAddres: https://api.hnb.hr/tecajn-eur/v3
+      currency: valuta
+      value: DKK

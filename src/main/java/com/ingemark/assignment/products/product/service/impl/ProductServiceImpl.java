@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public Mono<ProductDto> createOrUpdate(ProductDto productDto) {
 
-    productDto.setPriceEur(getCalculatedCurrencyPrice(productDto));
+    getCalculatedCurrencyPrice(productDto).subscribe(productDto::setPriceEur);
 
     return Mono.just(productRepository.save(productMapper.toEntity(productDto)))
                .map(productMapper::toDto);
@@ -63,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
     return Flux.fromIterable(productRepository.findAll()).map(productMapper::toListDto);
   }
 
-  private BigDecimal getCalculatedCurrencyPrice(ProductDto productDto) {
+  private Mono<BigDecimal> getCalculatedCurrencyPrice(ProductDto productDto) {
     CurrencyExchangeCalculationAdapter currencyExchangeCalculationAdapter = new CurrencyExchangeCalculationAdapterImpl(productDto,
                                                                                                                        currencyExchangeCalculationService);
     return currencyExchangeCalculationAdapter.getCurrencyPrice();

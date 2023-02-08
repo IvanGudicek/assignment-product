@@ -4,29 +4,29 @@ import com.ingemark.assignment.products.hnb.CurrencyExchangeCalculation;
 import com.ingemark.assignment.products.hnb.adapter.CurrencyExchangeCalculationAdapter;
 import com.ingemark.assignment.products.hnb.service.CurrencyExchangeCalculationService;
 import com.ingemark.assignment.products.util.BigDecimalUtil;
+import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+@RequiredArgsConstructor
 public class CurrencyExchangeCalculationAdapterImpl implements CurrencyExchangeCalculationAdapter {
 
-  private CurrencyExchangeCalculation currencyExchangeCalculation;
-  private CurrencyExchangeCalculationService currencyExchangeCalculationService;
-
-  public CurrencyExchangeCalculationAdapterImpl(CurrencyExchangeCalculation currencyExchangeCalculation,
-                                                CurrencyExchangeCalculationService currencyExchangeCalculationService) {
-    this.currencyExchangeCalculation = currencyExchangeCalculation;
-    this.currencyExchangeCalculationService = currencyExchangeCalculationService;
-  }
+  private final CurrencyExchangeCalculation currencyExchangeCalculation;
+  private final CurrencyExchangeCalculationService currencyExchangeCalculationService;
 
   @Override
-  public BigDecimal getCurrencyPrice() {
+  public Mono<BigDecimal> getCurrencyPrice() {
     return convertToEuro(currencyExchangeCalculation.getCurrencyPrice());
   }
 
-  private BigDecimal convertToEuro(BigDecimal priceHrk) {
-    String priceStringValue = currencyExchangeCalculationService.getCurrencyExchangeRate().getProdajni_tecaj();
-    return BigDecimalUtil.roundBigDecimal(priceHrk).divide(BigDecimalUtil.toBigDecimal(priceStringValue), RoundingMode.HALF_EVEN);
+  private Mono<BigDecimal> convertToEuro(BigDecimal priceHrk) {
+    return currencyExchangeCalculationService.getCurrencyExchangeRate().map(currencyExchangeCalculation ->
+                                                                              BigDecimalUtil.roundBigDecimal(priceHrk)
+                                                                                            .divide(BigDecimalUtil.toBigDecimal(currencyExchangeCalculation.getProdajni_tecaj()),
+                                                                                                    RoundingMode.HALF_EVEN)
+    );
   }
 
 }
