@@ -13,6 +13,4 @@ spring:
 hnb:
   services:
     config:
-      serverAddres: https://api.hnb.hr/tecajn-eur/v3
-      currency: valuta
-      value: DKK
+      serverAddress: https://api.hnb.hr/tecajn-eur/v3?valuta=DKK
