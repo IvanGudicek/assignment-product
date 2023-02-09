@@ -10,5 +10,8 @@ import org.springframework.context.annotation.Configuration;
 public class HnbProperties {
 
   private String serverAddress;
+  private String currencyPath;
+  private String currencyName;
+  private String currencyValue;
 
 }

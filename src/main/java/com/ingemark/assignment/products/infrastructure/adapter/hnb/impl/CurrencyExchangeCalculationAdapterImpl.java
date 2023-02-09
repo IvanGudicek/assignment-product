@@ -3,6 +3,7 @@ package com.ingemark.assignment.products.infrastructure.adapter.hnb.impl;
 import com.ingemark.assignment.products.infrastructure.adapter.hnb.CurrencyExchangeCalculation;
 import com.ingemark.assignment.products.infrastructure.adapter.hnb.CurrencyExchangeCalculationAdapter;
 import com.ingemark.assignment.products.infrastructure.adapter.hnb.CurrencyExchangeDto;
+import com.ingemark.assignment.products.infrastructure.adapter.hnb.config.HnbProperties;
 import com.ingemark.assignment.products.rest.error.handling.CurrencyExchangeConversionException;
 import com.ingemark.assignment.products.util.BigDecimalUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @Component
 public class CurrencyExchangeCalculationAdapterImpl implements CurrencyExchangeCalculationAdapter {
 
+  private final HnbProperties hnbProperties;
   private final WebClient hnbClient;
 
   @Override
@@ -39,6 +41,9 @@ public class CurrencyExchangeCalculationAdapterImpl implements CurrencyExchangeC
     //                                        .build());
 
     return hnbClient.get()
+                    .uri(uriBuilder -> uriBuilder.path(hnbProperties.getCurrencyPath())
+                                                 .queryParam(hnbProperties.getCurrencyName(), hnbProperties.getCurrencyValue())
+                                                 .build())
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<List<CurrencyExchangeDto>>() {
                     })
