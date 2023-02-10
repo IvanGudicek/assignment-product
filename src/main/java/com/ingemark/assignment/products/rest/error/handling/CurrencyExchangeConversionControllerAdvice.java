@@ -10,7 +10,7 @@ public class CurrencyExchangeConversionControllerAdvice extends AbstractControll
 
   @ExceptionHandler(CurrencyExchangeConversionException.class)
   public Mono<ResponseEntity<ErrorDto>> currencyExchangeConversionExceptionHandler(CurrencyExchangeConversionException e) {
-    return getErrorFromException(e, null);
+    return getErrorFromException(e);
   }
 
 }

@@ -1,9 +1,7 @@
 package com.ingemark.assignment.products.infrastructure.database;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-@Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends ReactiveCrudRepository<Product, Long> {
 
 }

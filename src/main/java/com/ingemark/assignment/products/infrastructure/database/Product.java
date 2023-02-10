@@ -3,35 +3,38 @@ package com.ingemark.assignment.products.infrastructure.database;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
 @Table(name = "product")
-public class Product extends AbstractPersistable {
+public class Product {
 
-  @Column(name = "name", nullable = false)
+  @Id
+  @Column("id")
+  private Long id;
+
+  @Column("name")
   private String name;
 
-  @Column(name = "description")
+  @Column("description")
   private String description;
 
-  @Column(name = "code", unique = true)
+  @Column("code")
   private String code;
 
-  @Column(name = "price_hrk", precision = 14, scale = 4)
+  @Column("price_hrk")
   private BigDecimal priceHrk;
 
-  @Column(name = "price_eur", precision = 14, scale = 4)
+  @Column("price_eur")
   private BigDecimal priceEur;
 
-  @Column(name = "available")
+  @Column("available")
   private Boolean available;
 
 }

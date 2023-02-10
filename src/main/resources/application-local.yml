@@ -1,14 +1,13 @@
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:db/db.changelog-root.yml
     url: jdbc:postgresql://localhost:5432/assignment-product
+    user: postgres
+    password: postgres
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/assignment-product
     username: postgres
     password: postgres
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 hnb:
   services:

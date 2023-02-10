@@ -9,7 +9,7 @@ public interface ProductService {
 
   Mono<ProductDto> createOrUpdate(ProductDto productDto);
 
-  Mono<ProductDto> deleteById(Long productId);
+  Mono<Void> deleteById(Long productId);
 
   Mono<ProductDto> findById(Long productId);
 

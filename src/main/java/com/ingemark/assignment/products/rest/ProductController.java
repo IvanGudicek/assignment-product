@@ -1,8 +1,8 @@
 package com.ingemark.assignment.products.rest;
 
+import com.ingemark.assignment.products.product.ProductService;
 import com.ingemark.assignment.products.rest.model.ProductDto;
 import com.ingemark.assignment.products.rest.model.ProductListDto;
-import com.ingemark.assignment.products.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +45,7 @@ public class ProductController {
   }
 
   @DeleteMapping("/{productId}")
-  public Mono<ProductDto> deleteById(@PathVariable String productId) {
+  public Mono<Void> deleteById(@PathVariable String productId) {
     return productService.deleteById(Long.valueOf(productId));
   }
 

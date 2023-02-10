@@ -6,8 +6,6 @@ spring:
     active: local
   webflux:
     base-path: /assignment-product-service
-  liquibase:
-    change-log: classpath:db/db.changelog-root.yml
 
 logging:
   level:
