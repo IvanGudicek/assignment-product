@@ -1,11 +1,11 @@
 package com.ingemark.assignment.products.infrastructure.adapter.hnb.impl;
 
+import com.ingemark.assignment.products.helper.BigDecimalHelper;
 import com.ingemark.assignment.products.infrastructure.adapter.hnb.CurrencyExchangeCalculation;
 import com.ingemark.assignment.products.infrastructure.adapter.hnb.CurrencyExchangeCalculationAdapter;
 import com.ingemark.assignment.products.infrastructure.adapter.hnb.CurrencyExchangeDto;
 import com.ingemark.assignment.products.infrastructure.adapter.hnb.config.HnbProperties;
 import com.ingemark.assignment.products.rest.error.handling.CurrencyExchangeConversionException;
-import com.ingemark.assignment.products.util.BigDecimalUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -22,6 +22,7 @@ public class CurrencyExchangeCalculationAdapterImpl implements CurrencyExchangeC
 
   private final HnbProperties hnbProperties;
   private final WebClient hnbClient;
+  private final BigDecimalHelper bigDecimalHelper;
 
   @Override
   public Mono<BigDecimal> getCurrencyPrice(CurrencyExchangeCalculation currencyExchangeCalculation) {
@@ -31,8 +32,8 @@ public class CurrencyExchangeCalculationAdapterImpl implements CurrencyExchangeC
   private Mono<BigDecimal> convertToEuro(BigDecimal priceHrk) {
     return getCurrencyExchangeRate()
       .map(currencyExchangeCalculation ->
-             BigDecimalUtil.roundBigDecimal(priceHrk).divide(BigDecimalUtil.toBigDecimal(currencyExchangeCalculation.getProdajni_tecaj()),
-                                                             RoundingMode.HALF_EVEN));
+             bigDecimalHelper.roundBigDecimal(priceHrk)
+                             .divide(bigDecimalHelper.toBigDecimal(currencyExchangeCalculation.getProdajni_tecaj()), RoundingMode.HALF_EVEN));
   }
 
   private Mono<CurrencyExchangeDto> getCurrencyExchangeRate() {
