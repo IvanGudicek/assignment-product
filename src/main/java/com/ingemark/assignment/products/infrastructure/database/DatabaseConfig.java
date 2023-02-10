@@ -1,4 +1,4 @@
-package com.ingemark.assignment.products.product.config;
+package com.ingemark.assignment.products.infrastructure.database;
 
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
