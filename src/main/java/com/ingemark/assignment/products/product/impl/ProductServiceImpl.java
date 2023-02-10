@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
                                              .onErrorResume(error -> Mono.error(new ProductDuplicateCodeException("Product with given code: "
                                                                                                                   + productDto.getCode()
                                                                                                                   + " already exist!")))
-                                             .thenReturn(productDto);
+                                             .map(productMapper::toDto);
   }
 
   @Override
