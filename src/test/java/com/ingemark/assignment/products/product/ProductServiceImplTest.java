@@ -38,16 +38,15 @@ public class ProductServiceImplTest {
   @Test
   public void should_retrieveProduct_when_productIdIsGiven() {
 
-    // given
+    // GIVEN
     Long productId = 1l;
 
     Mockito.when(productRepository.findById(1L)).thenReturn(Mono.just(Product.builder().id(1L).name("Book").description("Book description").code(
       "3339999333").priceHrk(new BigDecimal("896")).priceEur(new BigDecimal("18.4567")).available(true).build()));
 
-    // when
+    // WHEN
     Mono<ProductDto> productDtoMono = this.productService.findById(productId);
 
-    // then
     ProductDto expectedProduct =
       ProductDto.builder()
                 .name("Book")
@@ -58,6 +57,7 @@ public class ProductServiceImplTest {
                 .available(true)
                 .build();
 
+    // THEN
     StepVerifier.create(productDtoMono)
                 .expectNextMatches(actualProductDto -> expectedProduct.getName().equals(actualProductDto.getName()) &&
                                                        expectedProduct.getDescription().equals(actualProductDto.getDescription()) &&

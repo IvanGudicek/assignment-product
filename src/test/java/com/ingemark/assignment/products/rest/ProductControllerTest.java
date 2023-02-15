@@ -45,7 +45,7 @@ public class ProductControllerTest {
     this.wireMockServer = new WireMockServer(options().dynamicPort());
     this.wireMockServer.start();
 
-    // given
+    // GIVEN
     ProductDto productDto =
       ProductDto.builder().name("T-shirt").description("T-shirt description").code("5559999555").priceHrk(new BigDecimal("79")).available(true).build();
 
@@ -56,12 +56,12 @@ public class ProductControllerTest {
           aResponse()
             .withBody(successBodyWithCurrencies())));
 
-    // when
+    // WHEN
     webClient.post()
              .uri("/products")
              .body(BodyInserters.fromValue(productDto))
              .exchange()
-             // then
+             // THEN
              .expectStatus().isOk()
              .expectBody()
              .jsonPath("$.name").isEqualTo("T-shirt")
@@ -75,7 +75,6 @@ public class ProductControllerTest {
     webClient.delete()
              .uri("/products/{productId}", 6)
              .exchange()
-             // then
              .expectStatus().isOk()
              .expectBody()
              .isEmpty();
@@ -86,14 +85,14 @@ public class ProductControllerTest {
   @Test
   public void should_retrieveFirstProduct_when_productIdIsGiven() {
 
-    // given
+    // GIVEN
     String productId = "1";
 
-    // when
+    // WHEN
     webClient.get()
              .uri("/products/{productId}", productId)
              .exchange()
-             // then
+             // THEN
              .expectStatus().isOk()
              .expectBody()
              .jsonPath("$.id").isEqualTo(1)
@@ -108,14 +107,13 @@ public class ProductControllerTest {
   @Test
   public void should_deleteLastProduct_when_productIdIsGiven() {
 
-    // given
+    // GIVEN
     String productId = "5";
 
     // before deleting, must be 5 products
     webClient.get()
              .uri("/products")
              .exchange()
-             // then
              .expectStatus().isOk()
              .expectBody()
              .jsonPath("$.length()").isEqualTo(5)
@@ -125,11 +123,11 @@ public class ProductControllerTest {
              .jsonPath("$[3].id").isEqualTo(4)
              .jsonPath("$[4].id").isEqualTo(5);
 
-    // when
+    // WHEN
     webClient.delete()
              .uri("/products/{productId}", productId)
              .exchange()
-             // then
+             // THEN
              .expectStatus().isOk()
              .expectBody()
              .isEmpty();
@@ -138,7 +136,6 @@ public class ProductControllerTest {
     webClient.get()
              .uri("/products")
              .exchange()
-             // then
              .expectStatus().isOk()
              .expectBody()
              .jsonPath("$.length()").isEqualTo(4)
