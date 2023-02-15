@@ -36,10 +36,6 @@ public class CurrencyExchangeCalculationAdapterImpl implements CurrencyExchangeC
   }
 
   private Mono<CurrencyExchangeDto> getCurrencyExchangeRate() {
-    //    return Mono.just(CurrencyExchangeDto.builder().broj_tecajnice("28").datum_primjene("2023-02-08").drzava("Danska").drzava_iso("DNK")
-    //                                        .sifra_valute("208").valuta("DKK").kupovni_tecaj("7,4527").srednji_tecaj("7,4415").prodajni_tecaj("7,4303")
-    //                                        .build());
-
     return hnbClient.get()
                     .uri(uriBuilder -> uriBuilder.path(hnbProperties.getCurrencyPath())
                                                  .queryParam(hnbProperties.getCurrencyName(), hnbProperties.getCurrencyValue())
@@ -48,7 +44,7 @@ public class CurrencyExchangeCalculationAdapterImpl implements CurrencyExchangeC
                     .bodyToMono(new ParameterizedTypeReference<List<CurrencyExchangeDto>>() {
                     })
                     .map(currencyList -> currencyList.get(0))
-                    .onErrorResume(error -> Mono.error(new CurrencyExchangeConversionException(error.getMessage())));
+                    .onErrorMap(error -> new CurrencyExchangeConversionException(error.getMessage()));
   }
 
 }

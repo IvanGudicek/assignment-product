@@ -1,0 +1,18 @@
+spring:
+  liquibase:
+    change-log: classpath:db/db.changelog-root.yml
+    url: jdbc:h2:mem:assignment-product;DB_CLOSE_DELAY=-1;
+    user: sa
+    password:
+  r2dbc:
+    url: r2dbc:h2:mem:///assignment-product;DB_CLOSE_DELAY=-1;
+    username: sa
+    password:
+
+hnb:
+  services:
+    config:
+      serverAddress: https://api.hnb.hr/tecajn-eur
+      currencyPath: /v3
+      currencyName: valuta
+      currencyValue: DKK

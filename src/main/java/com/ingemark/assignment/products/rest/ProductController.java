@@ -4,6 +4,7 @@ import com.ingemark.assignment.products.product.ProductService;
 import com.ingemark.assignment.products.rest.model.ProductDto;
 import com.ingemark.assignment.products.rest.model.ProductListDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,28 +26,28 @@ public class ProductController {
   private final ProductService productService;
 
   @PostMapping
-  public Mono<ProductDto> save(@Valid @RequestBody ProductDto productDto) {
-    return productService.createOrUpdate(productDto);
+  public ResponseEntity<Mono<ProductDto>> save(@Valid @RequestBody ProductDto productDto) {
+    return ResponseEntity.ok(productService.createOrUpdate(productDto));
   }
 
   @PutMapping
-  public Mono<ProductDto> update(@Valid @RequestBody ProductDto productDto) {
-    return productService.createOrUpdate(productDto);
+  public ResponseEntity<Mono<ProductDto>> update(@Valid @RequestBody ProductDto productDto) {
+    return ResponseEntity.ok(productService.createOrUpdate(productDto));
   }
 
   @GetMapping
-  public Flux<ProductListDto> getAll() {
-    return productService.findAll();
+  public ResponseEntity<Flux<ProductListDto>> getAll() {
+    return ResponseEntity.ok(productService.findAll());
   }
 
   @GetMapping("/{productId}")
-  public Mono<ProductDto> getById(@PathVariable String productId) {
-    return productService.findById(Long.valueOf(productId));
+  public ResponseEntity<Mono<ProductDto>> getById(@PathVariable String productId) {
+    return ResponseEntity.ok(productService.findById(Long.valueOf(productId)));
   }
 
   @DeleteMapping("/{productId}")
-  public Mono<Void> deleteById(@PathVariable String productId) {
-    return productService.deleteById(Long.valueOf(productId));
+  public ResponseEntity<Mono<Void>> deleteById(@PathVariable String productId) {
+    return ResponseEntity.ok(productService.deleteById(Long.valueOf(productId)));
   }
 
 }

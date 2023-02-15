@@ -4,10 +4,12 @@ import com.ingemark.assignment.products.infrastructure.adapter.hnb.CurrencyExcha
 import com.ingemark.assignment.products.infrastructure.database.ProductRepository;
 import com.ingemark.assignment.products.product.ProductMapper;
 import com.ingemark.assignment.products.product.ProductService;
+import com.ingemark.assignment.products.rest.error.handling.CurrencyExchangeConversionException;
 import com.ingemark.assignment.products.rest.error.handling.ProductDuplicateCodeException;
 import com.ingemark.assignment.products.rest.model.ProductDto;
 import com.ingemark.assignment.products.rest.model.ProductListDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -27,9 +29,13 @@ public class ProductServiceImpl implements ProductService {
     return currencyExchangeCalculationAdapter.getCurrencyPrice(productDto)
                                              .doOnNext(productDto::setPriceEur)
                                              .flatMap(product -> productRepository.save(productMapper.toEntity(productDto)))
-                                             .onErrorResume(error -> Mono.error(new ProductDuplicateCodeException("Product with given code: "
-                                                                                                                  + productDto.getCode()
-                                                                                                                  + " already exist!")))
+                                             .onErrorResume(CurrencyExchangeConversionException.class,
+                                                            error -> Mono.error(new CurrencyExchangeConversionException(error.getMessage())))
+                                             .onErrorResume(DataIntegrityViolationException.class, error -> Mono.error(new
+                                                                                                                         ProductDuplicateCodeException(
+                                               "Product with given code: "
+                                               + productDto.getCode()
+                                               + " already exist!")))
                                              .map(productMapper::toDto);
   }
 

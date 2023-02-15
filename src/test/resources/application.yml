@@ -12,7 +12,3 @@ logging:
     org.springframework: DEBUG
     liquibase: DEBUG
     LiquibaseSchemaResolver: DEBUG
-
-springdoc:
-  swagger-ui:
-    path: /swagger/swagger-ui.html
